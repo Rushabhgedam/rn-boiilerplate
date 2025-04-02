@@ -1,0 +1,1 @@
+export const zomato = require("./zomato.png");
