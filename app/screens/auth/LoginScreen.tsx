@@ -11,7 +11,7 @@ import {responsiveHeight} from '../../Utils/dimensions';
 const LoginScreen: React.ComponentType<{
   route: RouteProp<ParamListBase, 'loginscreen'>;
   navigation: any;
-}> = () => {
+}> = ({navigation}) => {
   const validationSchema = Yup.object({
     email: Yup.string()
       .matches(
@@ -51,7 +51,7 @@ const LoginScreen: React.ComponentType<{
           validationSchema={validationSchema}
           validateOnChange
           validateOnMount
-          onSubmit={values => Alert.alert(values.email)}>
+          onSubmit={values => Alert.alert("Title",JSON.stringify(values))}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
             <>
               <TextInput
@@ -66,7 +66,7 @@ const LoginScreen: React.ComponentType<{
                 }}
               />
 
-              <ErrorMessage name="email" />
+              <ErrorMessage name="email" component={Text} />
               <TextInput
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
@@ -78,17 +78,17 @@ const LoginScreen: React.ComponentType<{
                   borderWidth: 1,
                 }}
               />
-              <ErrorMessage name="password" />
+              <ErrorMessage name="password"  component={Text} />
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={{marginVertical: responsiveHeight(1)}}>
+                <Text onPress={()=> navigation.navigate("registerscreen")} style={{marginVertical: responsiveHeight(1)}}>
                   Register now
                 </Text>
-                <Text style={{marginVertical: responsiveHeight(1)}}>
+                <Text onPress={()=> navigation.navigate("forgetpasswordscreen")} style={{marginVertical: responsiveHeight(1)}}>
                   Forget password ?
                 </Text>
               </View>
-              <Button onPress={() => handleSubmit()}>Submit</Button>
+              <Button onPress={handleSubmit}>Submit</Button>
             </>
           )}
         </Formik>
