@@ -17,7 +17,6 @@ const UserStack = () => {
     }}>
         <Stack.Screen component={SplashScreen} name='splashscreen'/>
         <Stack.Screen component={AuthStack} name='authstack'/>
-        {/* <Stack.Screen component={UserStack} name='userstack'/> */}
     </Stack.Navigator>
   )
 }
