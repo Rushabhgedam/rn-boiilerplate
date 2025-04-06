@@ -21,7 +21,7 @@ const SplashScreen: React.ComponentType<{
       duration:4000,
       easing:Easing.linear,
     },()=>{
-      runOnJS(navigation.navigate)("authstack")
+      runOnJS(navigation.replace)("authstack")
     })
 
 

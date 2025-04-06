@@ -1,17 +1,30 @@
 import {ParamListBase, RouteProp} from '@react-navigation/native';
 import {ErrorMessage, Formik} from 'formik';
-import React from 'react';
-import {Alert, Image, ScrollView, StyleSheet, View} from 'react-native';
-import {Avatar, Button, Text, TextInput} from 'react-native-paper';
+import React, {useContext, useState} from 'react';
+import {
+  Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+  Text as RNText,
+} from 'react-native';
+import {Button, DefaultTheme, Text, TextInput} from 'react-native-paper';
 import * as Yup from 'yup';
-import {Container} from '../../components';
+import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import {zomato} from '../../assets';
+import {Container} from '../../components';
+import {AuthContext} from '../../contexts/AuthProvider';
 import {responsiveHeight} from '../../Utils/dimensions';
 
 const LoginScreen: React.ComponentType<{
   route: RouteProp<ParamListBase, 'loginscreen'>;
   navigation: any;
 }> = ({navigation}) => {
+  const {isLoggedIn, setIsLoggedIn} = useContext(AuthContext);
+  const [isEncrypted, setisEncrypted] = useState(true);
+
+  console.log('authContext', JSON.stringify(isLoggedIn));
   const validationSchema = Yup.object({
     email: Yup.string()
       .matches(
@@ -51,7 +64,7 @@ const LoginScreen: React.ComponentType<{
           validationSchema={validationSchema}
           validateOnChange
           validateOnMount
-          onSubmit={values => Alert.alert("Title",JSON.stringify(values))}>
+          onSubmit={values => Alert.alert('Title', JSON.stringify(values))}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
             <>
               <TextInput
@@ -66,7 +79,7 @@ const LoginScreen: React.ComponentType<{
                 }}
               />
 
-              <ErrorMessage name="email" component={Text} />
+              <ErrorMessage name="email" component={RNText} />
               <TextInput
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
@@ -77,18 +90,31 @@ const LoginScreen: React.ComponentType<{
                 outlineStyle={{
                   borderWidth: 1,
                 }}
+                secureTextEntry={isEncrypted}
+                right={
+                  <TextInput.Icon
+                    icon={isEncrypted ? 'eye-outline' : 'eye-off-outline'}
+                    size={20}
+                    color={'red'}
+                    onPress={()=> setisEncrypted(encState => !encState)}
+                  />
+                }
               />
-              <ErrorMessage name="password"  component={Text} />
+              <ErrorMessage name="password" component={RNText} />
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text onPress={()=> navigation.navigate("registerscreen")} style={{marginVertical: responsiveHeight(1)}}>
+                <Text
+                  onPress={() => navigation.navigate('registerscreen')}
+                  style={{marginVertical: responsiveHeight(1)}}>
                   Register now
                 </Text>
-                <Text onPress={()=> navigation.navigate("forgetpasswordscreen")} style={{marginVertical: responsiveHeight(1)}}>
+                <Text
+                  onPress={() => navigation.navigate('forgetpasswordscreen')}
+                  style={{marginVertical: responsiveHeight(1)}}>
                   Forget password ?
                 </Text>
               </View>
-              <Button onPress={handleSubmit}>Submit</Button>
+              <Button onPress={() => handleSubmit()}>Submit</Button>
             </>
           )}
         </Formik>
